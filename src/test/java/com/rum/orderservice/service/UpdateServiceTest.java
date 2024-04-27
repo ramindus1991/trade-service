@@ -3,6 +3,7 @@ package com.rum.orderservice.service;
 import com.rum.orderservice.dto.TradeRefDTO;
 import com.rum.orderservice.dto.TradeType;
 import com.rum.orderservice.dto.UpdateRequest;
+import com.rum.orderservice.entity.InstrumentEntity;
 import com.rum.orderservice.exception.ResourceNotFoundException;
 import com.rum.orderservice.feign.PortfolioServiceClient;
 import com.rum.orderservice.repository.InstrumentRepository;
@@ -13,9 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import javax.sound.midi.Instrument;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -48,7 +49,10 @@ public class UpdateServiceTest {
         tradeRefDTO.setTradeType(TradeType.BUY);
         tradeRefDTO.setUnits(10);
 
-        when(instrumentRepository.findById(any(Long.class))).thenReturn(Optional.of(new Instrument(1L, "Instrument 1", "INS1")));
+        InstrumentEntity instrument = new InstrumentEntity();
+        instrument.setInstrumentName("APPL");
+
+        when(instrumentRepository.findById(any(Long.class))).thenReturn(Optional.of(instrument));
         when(authService.getCurrentUser()).thenReturn("user1");
 
         updateService.update(tradeRefDTO);
@@ -60,7 +64,7 @@ public class UpdateServiceTest {
     @DisplayName("Should throw exception when invalid instrument id is provided")
     void shouldThrowExceptionWhenInvalidInstrumentIdIsProvided() {
         TradeRefDTO tradeRefDTO = new TradeRefDTO();
-        tradeRefDTO.setInstrumentId("invalid");
+        tradeRefDTO.setInstrumentId(1);
 
         when(instrumentRepository.findById(any(Long.class))).thenReturn(Optional.empty());
 

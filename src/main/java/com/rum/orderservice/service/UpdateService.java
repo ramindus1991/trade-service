@@ -22,7 +22,7 @@ public class UpdateService {
 
         public void update(TradeRefDTO tradeRefDTO){
             UpdateRequest updateRequest = new UpdateRequest();
-            updateRequest.setInstrumentName(instrumentRepository.findById(Long.valueOf(tradeRefDTO.getInstrumentId())).orElseThrow().getInstrumentName());
+            updateRequest.setInstrumentName(instrumentRepository.findById(Long.valueOf(tradeRefDTO.getInstrumentId())).orElseThrow(() -> new ResourceNotFoundException("Instrument not found")).getInstrumentName());
             updateRequest.setTradeType(tradeRefDTO.getTradeType().toString());
             updateRequest.setUnits(tradeRefDTO.getUnits());
             portfolioServiceClient.sendUpdate(authService.getCurrentUser(), updateRequest);
