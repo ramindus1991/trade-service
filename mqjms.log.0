@@ -1,0 +1,9 @@
+April 27, 2024, 1:57:38 AM SGT[http-nio-8080-exec-2] com.ibm.msg.client.commonservices.util.SerializationValidator
+No Allow list functionality enabled - either the properties were not set, or the security permissions prevent them being read
+
+EXPLANATION:
+null
+
+ACTION:
+null
+--------------------------------------------------------------------
